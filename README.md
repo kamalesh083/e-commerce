@@ -30,45 +30,7 @@ This project provides a seamless shopping experience with features like live pro
 - ⚙️ **Express.js**
 - 🌐 **CORS** (Cross-Origin Resource Sharing)
 
-### Database
-- 🗃️ **MongoDB**
 
----
-
-## 📁 Folder Structure
-
-ecommerce-site/
-│
-├── backend/
-│ ├── controllers/
-│ │ └── productController.js
-│ ├── models/
-│ │ └── Product.js
-│ ├── routes/
-│ │ └── productRoutes.js
-│ ├── server.js
-│ └── .env
-│
-├── frontend/
-│ ├── src/
-│ │ ├── components/
-│ │ │ ├── Navbar.jsx
-│ │ │ ├── SearchBar.jsx
-│ │ │ ├── Login.jsx
-│ │ │ ├── Signup.jsx
-│ │ │ └── ResetPassword.jsx
-│ │ ├── pages/
-│ │ │ └── Products.jsx
-│ │ ├── App.jsx
-│ │ └── main.jsx
-│ └── package.json
-│
-└── README.md
-
-yaml
-Copy code
-
----
 
 ## ⚙️ Installation Guide
 
