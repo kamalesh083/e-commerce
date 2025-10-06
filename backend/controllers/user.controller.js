@@ -21,7 +21,7 @@ const signup = (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
   }
   if (users.find((u) => u.email === email)) {
-    return res.status(409).json({ message: "Email already exists" });
+    return res.status(404).json({ message: "Email already exists" });
   }
   const newUser = {
     id: users.length + 1,
@@ -40,18 +40,32 @@ const login = (req, res) => {
   if (!email || !password) {
     return res.status(400).json({ message: "Email and password are required" });
   }
+
   const user = users.find((u) => u.email === email && u.password === password);
   if (!user) {
     return res.status(401).json({ message: "Invalid email or password" });
   }
 
-  res.status(200).json({ message: "Login successful", user });
+  // Save user in session
+  req.session.user = {
+    id: user.id,
+    name: user.firstName + " " + user.lastName,
+    email: user.email,
+  };
+  console.log(req.session.user);
+
+  res.status(200).json({ message: "Login successful", user: req.session.user });
 };
 
 const logout = (req, res) => {
-  res.status(200).json({ message: "User logged out successfully" });
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ message: "Logout failed" });
+    }
+    res.clearCookie("connect.sid"); // remove session cookie
+    res.status(200).json({ message: "User logged out successfully" });
+  });
 };
-
 // const forgotPassword = (req, res) => {
 //   const { email } = req.body;
 //   if (!email) {
@@ -83,4 +97,18 @@ const resetPassword = (req, res) => {
   res.status(200).json({ message: "Password has been reset successfully" });
 };
 
-export { signup, login, logout, resetPassword };
+const getCurrentUser = (req, res) => {
+  try {
+    if (!req.session.user) {
+      return res.status(401).json({ user: null });
+    }
+
+    // Return user info stored in session
+    res.status(200).json({ user: req.session.user });
+  } catch (err) {
+    console.error("Error fetching user:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export { signup, login, logout, resetPassword, getCurrentUser };
