@@ -10,8 +10,9 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
   return (
     <Router>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white">
+      <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white">
         <Navbar onSearch={setSearchQuery} />
+
         <Routes>
           <Route path="/" element={<Navigate to="/products" replace />} />
           <Route path="/login" element={<Login />} />

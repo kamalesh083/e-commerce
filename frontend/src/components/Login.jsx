@@ -40,7 +40,9 @@ export function Login() {
       console.log(response.data);
       navigate("/products");
     } catch (error) {
-      toast.error("Login failed. Please check your credentials.");
+      const message =
+        error.response?.data?.message || "Something went wrong. Try again!";
+      toast.error(message);
       console.error("There was an error!", error);
     } finally {
       setLoading(false);
