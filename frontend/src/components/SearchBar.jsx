@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState("");
@@ -8,6 +9,7 @@ const SearchBar = ({ onSearch }) => {
   const [timer, setTimer] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const wrapperRef = useRef(null);
+  const navigate = useNavigate();
 
   // Debounced fetch from server
   useEffect(() => {
@@ -56,6 +58,9 @@ const SearchBar = ({ onSearch }) => {
     });
 
     if (onSearch) onSearch(name);
+
+    // Navigate to /search?query=<name>
+    navigate(`/search?query=${encodeURIComponent(name)}`);
   };
 
   const handleKeyDown = (e) => {
@@ -74,6 +79,7 @@ const SearchBar = ({ onSearch }) => {
     setQuery("");
     setResults([]);
     setShowDropdown(false);
+    if (onSearch) onSearch("");
   };
 
   return (

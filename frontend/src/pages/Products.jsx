@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 
 const Products = ({ searchQuery }) => {
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -28,15 +30,20 @@ const Products = ({ searchQuery }) => {
     setFilteredProducts(filtered);
   }, [searchQuery, products]);
 
+  const handleClick = (id) => () => {
+    navigate(`/products/${id}`);
+  };
+
   return (
     <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {filteredProducts.map((p) => (
         <div
           key={p.id}
           className="bg-gray-800/80 p-4 rounded-lg shadow-md hover:shadow-purple-500/30 transition-all"
+          onClick={handleClick(p._id)}
         >
           <img
-            src={p.image}
+            src={p.imageUrl}
             alt={p.name}
             className="w-full h-48 object-contain mb-2 rounded-md"
           />

@@ -34,6 +34,9 @@ export function Login() {
         {
           email,
           password,
+        },
+        {
+          withCredentials: true, // ✅ add this
         }
       );
       toast.success("Login successful!");

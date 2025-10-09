@@ -5,27 +5,22 @@ import productRoute from "./routes/product.route.js";
 import userRoute from "./routes/user.route.js";
 import orderRoute from "./routes/order.route.js";
 import cartRoute from "./routes/cart.route.js";
-import session from "express-session";
+
+import connectDB from "./config/db.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // your React app URL
-    credentials: true, // allow cookies (important for session)
-  })
-);
-app.use(
-  session({
-    secret: "your_secret_key", // change this to a strong secret
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false }, // set to true if using HTTPS
+    origin: "http://localhost:5173", // your React app
+    credentials: true, // ✅ needed for cookies
   })
 );
 
 app.use(express.json());
+app.use(cookieParser());
 
 const PORT = process.env.PORT || 5000;
 
@@ -34,6 +29,12 @@ app.use("/api/users", userRoute);
 app.use("/api/orders", orderRoute);
 app.use("/api/carts", cartRoute);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port http://localhost:${PORT}`);
-});
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`✅ Server is running at http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("❌ Failed to connect to the database:", err);
+  });
