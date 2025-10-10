@@ -64,7 +64,7 @@ const addProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   const { id } = req.params;
-  const { name, category, tags, stock, price } = req.body;
+  const { name, category, tags, stock, price, imageUrl } = req.body;
   try {
     const product = await Product.findById(id);
 
@@ -77,6 +77,7 @@ const updateProduct = async (req, res) => {
     if (tags) product.tags = tags;
     if (stock) product.stock = stock;
     if (price) product.price = price;
+    if (imageUrl) product.imageUrl = imageUrl;
 
     const updatedProduct = await product.save();
 
