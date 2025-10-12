@@ -38,7 +38,7 @@ const Products = ({ searchQuery }) => {
     <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {filteredProducts.map((p) => (
         <div
-          key={p.id}
+          key={p._id}
           className="bg-gray-800/80 p-4 rounded-lg shadow-md hover:shadow-purple-500/30 transition-all"
           onClick={handleClick(p._id)}
         >

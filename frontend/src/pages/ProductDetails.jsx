@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import axios from "axios";
 import toast from "react-hot-toast";
+import ShoppingLoader from "@/components/ShoppingLoader";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -21,7 +22,30 @@ const ProductDetails = () => {
     fetchProduct();
   }, [id]);
 
-  if (!product) return <div className="text-white p-4">Loading...</div>;
+  if (!product)
+    return (
+      <div className="text-white p-4">
+        <ShoppingLoader />
+      </div>
+    );
+
+  const handleAddToCart = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/carts/add",
+        {
+          productId: product._id,
+          quantity: 1,
+        },
+        { withCredentials: true } // ensures JWT cookie is sent
+      );
+      toast.success("Added to cart!");
+      console.log(res.data);
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Failed to add to cart.");
+      console.log(err);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white p-16 flex justify-center">
@@ -61,7 +85,10 @@ const ProductDetails = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 mt-6">
-            <button className="flex-1 bg-purple-600 hover:bg-purple-500 py-4 rounded-3xl font-semibold text-lg transition-all">
+            <button
+              className="flex-1 bg-purple-600 hover:bg-purple-500 py-4 rounded-3xl font-semibold text-lg transition-all"
+              onClick={handleAddToCart}
+            >
               Add to Cart
             </button>
             <button className="flex-1 bg-green-600 hover:bg-green-500 py-4 rounded-3xl font-semibold text-lg transition-all">

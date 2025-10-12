@@ -1,0 +1,120 @@
+// Cart.jsx
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import CartItem from "../components/CartItem";
+import ShoppingLoader from "@/components/ShoppingLoader";
+
+const Cart = () => {
+  const [cartItems, setCartItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/carts", {
+          withCredentials: true, // send JWT cookie
+        });
+        console.log("Cart data:", res.data.items);
+        setCartItems(res.data.items);
+        console.log("Total Price:", res.data.totalPrice);
+        setTotalPrice(res.data.totalPrice);
+      } catch (err) {
+        toast.error("Failed to load cart");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCart();
+  }, []);
+
+  // const handleClearCart = async () => {
+  //   try {
+  //     const res = await axios.delete("http://localhost:5000/api/carts/clear", {
+  //       withCredentials: true,
+  //     });
+  //     toast.success(res.data.message);
+  //     setCartItems([]);
+  //     setTotalPrice(0);
+  //   } catch (err) {
+  //     toast.error("Failed to clear cart.");
+  //     console.error(err);
+  //   }
+  // };
+  const handleClearCart = async () => {
+    try {
+      const res = await axios.delete("http://localhost:5000/api/carts/clear", {
+        withCredentials: true,
+      });
+      toast.success(res.data.message);
+
+      // update state with backend response
+      setCartItems(res.data.cart.items);
+      setTotalPrice(res.data.cart.totalPrice);
+    } catch (err) {
+      toast.error("Failed to clear cart.");
+      console.error(err);
+    }
+  };
+
+  if (loading) return <ShoppingLoader />;
+
+  return (
+    <div className="min-h-screen p-8 bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white">
+      <h1 className="text-4xl font-bold mb-8 text-purple-400 text-center">
+        Your Cart
+      </h1>
+
+      {cartItems.length === 0 ? (
+        <p className="text-gray-400 text-xl text-center mt-20">
+          🛒 Your cart is empty.
+        </p>
+      ) : (
+        <div className="max-w-6xl mx-auto">
+          {/* Cart Items List */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {cartItems.map((item) => (
+              <CartItem
+                key={
+                  item?.productId?._id?.toString() ||
+                  item?.productId?.toString() ||
+                  item._id ||
+                  Math.random()
+                }
+                item={item}
+                setCartItems={setCartItems}
+                setTotalPrice={setTotalPrice}
+              />
+            ))}
+          </div>
+
+          {/* Cart Summary */}
+          <div className="mt-10 bg-gray-800/60 p-6 rounded-3xl shadow-lg flex flex-col md:flex-row justify-between items-center gap-6 border-t border-purple-600">
+            <div className="text-white text-xl font-semibold">
+              Total: <span className="text-purple-400">${totalPrice}</span>
+            </div>
+            <div className="flex gap-4">
+              <button
+                onClick={handleClearCart}
+                className="bg-red-600 hover:bg-red-500 px-6 py-3 rounded-3xl font-semibold transition-all shadow-md"
+              >
+                Clear Cart
+              </button>
+              <button
+                onClick={() => toast.success("Proceeding to checkout...")}
+                className="bg-purple-600 hover:bg-purple-500 px-6 py-3 rounded-3xl font-semibold transition-all shadow-md"
+              >
+                Checkout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Cart;

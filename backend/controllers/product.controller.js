@@ -34,8 +34,8 @@ const getProductById = async (req, res) => {
 
 const addProduct = async (req, res) => {
   try {
-    const { name, category, tags, stock, price, image } = req.body;
-    if (!name || !category || !tags || !stock || !price) {
+    const { name, category, tags, stock, price, imageUrl } = req.body;
+    if (!name || !category || !tags || !stock || !price || !imageUrl) {
       return res.status(400).json({ message: "All fields are required" });
     }
     let processedTags = tags;
@@ -49,7 +49,7 @@ const addProduct = async (req, res) => {
       tags: processedTags,
       price,
       stock,
-      imageUrl: image,
+      imageUrl,
     });
     await newProduct.save();
     res.status(201).json(newProduct);

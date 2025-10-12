@@ -75,6 +75,7 @@ export function Login() {
                 <Input
                   id="email"
                   type="email"
+                  autoComplete="email"
                   placeholder="m@example.com"
                   className="bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:ring-purple-500"
                   onChange={(e) => setEmail(e.target.value)}
@@ -98,6 +99,7 @@ export function Login() {
                 <Input
                   id="password"
                   type="password"
+                  autoComplete="current-password"
                   className="bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:ring-purple-500"
                   onChange={(e) => setPassword(e.target.value)}
                   required
