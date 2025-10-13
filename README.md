@@ -1,63 +1,133 @@
-# 🛍️ E-Commerce Website
+# E-Commerce Web Application
 
-A modern, feature-rich **E-Commerce Web Application** built with **ReactJS**, **Node.js**, **Express**, and **MongoDB**.  
-This project provides a seamless shopping experience with features like live product search, user authentication, and responsive UI design.  
-
----
-
-## 🚀 Features
-
-- 🔍 **Smart Search Bar:** Real-time product search using server-side filtering and debouncing.  
-- 🧾 **Product Listing:** Displays all available products with name, price, and image.  
-- 🕓 **Recent Searches:** Keeps track of the user’s latest search history for quick access.  
-- 🔐 **Authentication:** Includes Login, Signup, and Reset Password functionality.  
-- 🧭 **Global Navigation Bar:** Common navbar across all pages for better navigation.  
-- 🌗 **Modern UI:** Styled with Tailwind CSS for a clean, attractive, and mobile-responsive interface.  
-- ⚡ **Optimized Performance:** Uses Axios for efficient API calls and CORS for secure communication.  
+A modern e-commerce web application built with **ReactJS**, **Node.js**, **Express**, and **MongoDB**, featuring a sleek UI, shopping cart, product search, wishlist functionality, and authentication.
 
 ---
 
-## 🧩 Tech Stack
+## Features
 
-### Frontend
-- ⚛️ **ReactJS**
-- 🎨 **Tailwind CSS**
-- 📦 **Axios**
-- 💡 **Lucide React Icons**
+### **Frontend (ReactJS)**
 
-### Backend
-- 🧠 **Node.js**
-- ⚙️ **Express.js**
-- 🌐 **CORS** (Cross-Origin Resource Sharing)
+- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile.
+- **User Authentication**: Login, signup, and password reset functionality.
+- **Product Catalog**: Browse products with categories, tags, and detailed descriptions.
+- **Search Functionality**: Search products by name or category.
+- **Product Details Page**: High-quality images, highlights, and customer reviews.
+- **Shopping Cart**: Add, update, or remove items from cart with total price calculation.
+- **Wishlist**: Users can save products to view later.
+- **Back Button Navigation**: Easily return to the previous page.
+- **Interactive UI**: Smooth animations and hover effects for buttons and cards.
+- **Notifications**: Real-time success/error messages with `react-hot-toast`.
 
+### **Backend (Node.js + Express)**
 
+- **RESTful API** for products, users, carts, and wishlist management.
+- **JWT Authentication** for secure API routes.
+- **CRUD Operations**: Create, read, update, and delete products, cart items, and wishlist items.
+- **Error Handling**: Graceful handling of invalid requests or server errors.
 
-## ⚙️ Installation Guide
+### **Database (MongoDB)**
 
-### 1️⃣ Clone the Repository
+- Stores user data, products, cart contents, and wishlist items.
+- Flexible schema with Mongoose for easy updates and validations.
+
+---
+
+## Tech Stack
+
+- **Frontend**: ReactJS, Tailwind CSS, React Router, React Hot Toast, Axios
+- **Backend**: Node.js, Express.js, JWT Authentication
+- **Database**: MongoDB with Mongoose
+- **Tools**: VS Code, Postman, Nodemon
+
+---
+
+## Installation
+
+### **Backend**
+
+1. Clone the repository:
+
 ```bash
-git clone https://github.com/your-username/ecommerce-site.git
-cd ecommerce-site
-2️⃣ Install Dependencies
-For backend:
+git clone https://github.com/yourusername/e-commerce-app.git
+cd e-commerce-app/backend
+```
 
-bash
-Copy code
-cd backend
+Install dependencies:
+```
 npm install
-For frontend:
-
-bash
-Copy code
-cd ../frontend
-npm install
-3️⃣ Run the Application
+```
+Create a .env file with the following variables:
+```
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+```
 Start the backend server:
-bash
-Copy code
+```
 npm run dev
+```
+Frontend
 
-Start the frontend (React):
-bash
-Copy code
-npm run dev
+Navigate to the frontend directory:
+```
+cd ../frontend
+```
+
+
+Install dependencies:
+```
+npm install
+```
+
+Start the development server:
+```
+npm start
+```
+
+Folder Structure
+```
+├── backend
+│   ├── controllers
+│   ├── models
+│   ├── routes
+│   ├── middleware
+│   ├── server.js
+├── frontend
+│   ├── src
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── assets
+│   │   └── App.jsx
+│   └── package.json
+├── README.md
+```
+
+Usage
+
+Visit http://localhost:5173 to view the app.
+
+Authentication:
+
+Sign up for a new account.
+
+Login using your email and password.
+
+Products:
+
+Browse products, view details, and read reviews.
+
+Add items to your cart or wishlist.
+
+Cart & Wishlist:
+
+Manage quantities, remove items, or clear cart.
+
+Search:
+
+Use the search bar to filter products by name or category
+
+License
+```
+This project is licensed under the MIT License.
+```
