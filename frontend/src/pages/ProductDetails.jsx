@@ -1,6 +1,7 @@
 // ProductDetails.jsx
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { ArrowLeft } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ShoppingLoader from "@/components/ShoppingLoader";
@@ -8,6 +9,7 @@ import ShoppingLoader from "@/components/ShoppingLoader";
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -42,14 +44,28 @@ const ProductDetails = () => {
       toast.success("Added to cart!");
       console.log(res.data);
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to add to cart.");
+      if (err?.response?.data?.message == "Unauthorized - No token") {
+        toast.error("Please login to add items to cart.");
+      } else {
+        toast.error(err?.response?.data?.message || "Failed to add to cart.");
+      }
       console.log(err);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white p-16 flex justify-center">
-      <div className="w-full max-w-7xl flex flex-col md:flex-row gap-16">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white p-16 relative">
+      {/* Back Button: floating at top-left */}
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-800/70 hover:bg-gray-700/80 text-purple-400 font-medium backdrop-blur-md shadow-lg absolute top-8 left-8 transition-all"
+      >
+        <ArrowLeft className="w-5 h-5" />
+        Back
+      </button>
+
+      {/* Main content */}
+      <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row gap-16 pt-12">
         {/* Left: Image */}
         <div className="flex-1 flex justify-center items-start">
           <img
