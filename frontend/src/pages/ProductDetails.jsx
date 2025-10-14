@@ -80,7 +80,11 @@ const ProductDetails = () => {
       console.log(res.data);
     } catch (error) {
       console.log(error);
-      toast.error("Failed to update wishlist.");
+      if (error?.response?.data?.message == "Unauthorized - No token") {
+        toast.error("Please login to manage your wishlist.");
+      } else {
+        toast.error("Failed to update wishlist.");
+      }
     }
   };
 
