@@ -17,7 +17,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="relative flex items-center justify-between px-6 py-3 bg-gray-900/80 backdrop-blur-md border-b border-purple-500/20 shadow-md w-full">
+    <div className="relative flex items-center px-6 py-3 bg-gray-900/80 backdrop-blur-md border-b border-purple-500/20 shadow-md w-full">
       {/* Left: Logo */}
       <div
         className="flex items-center gap-2 cursor-pointer z-10"
@@ -27,14 +27,13 @@ const Navbar = () => {
         <img src={logoName} alt="logoName" className="h-10" />
       </div>
 
-      {/* Center: Navbar2 absolutely centered */}
-      <div className="absolute left-1/2 -translate-x-1/2">
+      {/* Center: Navbar2 (desktop only) */}
+      <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0">
         <Navbar2 />
       </div>
 
       {/* Right: Cart + Search + User Menu */}
-      <div className="flex items-center gap-5 z-10">
-        {/* 🛒 Cart */}
+      <div className="flex items-center gap-5 z-10 ml-auto">
         <button
           onClick={() => navigate("/cart")}
           className="relative p-2 text-purple-400 hover:text-purple-300 transition-colors"
@@ -42,12 +41,10 @@ const Navbar = () => {
           <ShoppingCart size={26} />
         </button>
 
-        {/* 🔍 Search */}
         <div className="max-w-[300px]">
           <SearchBar onSearch={handleSearch} />
         </div>
 
-        {/* 👤 User Menu */}
         <UserMenu />
       </div>
     </div>

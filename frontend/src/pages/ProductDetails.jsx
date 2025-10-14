@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { ArrowLeft } from "lucide-react";
+import { Heart, HeartOff } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ShoppingLoader from "@/components/ShoppingLoader";
@@ -9,6 +10,7 @@ import ShoppingLoader from "@/components/ShoppingLoader";
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [isWishlisted, setIsWishlisted] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,7 +23,19 @@ const ProductDetails = () => {
         console.log(err);
       }
     };
+    const checkWishlistStatus = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/wishlist", {
+          withCredentials: true,
+        });
+        const found = res.data.wishlist.some((p) => p._id === id);
+        setIsWishlisted(found);
+      } catch (err) {
+        console.log("⚠️ Could not check wishlist (user not logged in)");
+      }
+    };
     fetchProduct();
+    checkWishlistStatus();
   }, [id]);
 
   if (!product)
@@ -53,6 +67,23 @@ const ProductDetails = () => {
     }
   };
 
+  const handleToggleWishlist = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/wishlist/toggle",
+        { productId: product._id },
+        { withCredentials: true }
+      );
+      toast.success(res.data.message);
+      // Optionally, update local state or refetch wishlist status
+      setIsWishlisted((prev) => !prev);
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to update wishlist.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white p-16 relative">
       {/* Back Button: floating at top-left */}
@@ -67,12 +98,25 @@ const ProductDetails = () => {
       {/* Main content */}
       <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row gap-16 pt-12">
         {/* Left: Image */}
-        <div className="flex-1 flex justify-center items-start">
+        <div className="relative flex-1 flex justify-center items-start">
+          {" "}
+          {/* <--- 1. ADD 'relative' HERE */}
           <img
             src={product.imageUrl}
             alt={product.name}
             className="w-full max-w-2xl h-auto object-contain rounded-3xl border border-purple-500/40 shadow-2xl"
           />
+          {/* ❤️ Heart Icon */}
+          <button
+            onClick={handleToggleWishlist}
+            className="absolute top-4 right-4 p-3 bg-gray-800/70 hover:bg-gray-700 rounded-full shadow-lg transition-all" /* <--- 2. CHANGE 'bottom-4' to 'top-4' */
+          >
+            {isWishlisted ? (
+              <Heart className="w-6 h-6 text-red-500 fill-current" />
+            ) : (
+              <Heart className="w-6 h-6 text-gray-300" />
+            )}
+          </button>
         </div>
 
         {/* Right: Details */}

@@ -5,6 +5,7 @@ import productRoute from "./routes/product.route.js";
 import userRoute from "./routes/user.route.js";
 import orderRoute from "./routes/order.route.js";
 import cartRoute from "./routes/cart.route.js";
+import wishListRoute from "./routes/wishList.route.js";
 
 import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
@@ -28,6 +29,7 @@ app.use("/api/products", productRoute);
 app.use("/api/users", userRoute);
 app.use("/api/orders", orderRoute);
 app.use("/api/carts", cartRoute);
+app.use("/api/wishlist", wishListRoute);
 
 connectDB()
   .then(() => {

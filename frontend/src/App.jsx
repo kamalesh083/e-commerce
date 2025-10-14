@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import ProductDetails from "./pages/ProductDetails";
 import SearchResults from "./pages/SearchResults";
 import CartDetails from "./pages/CartDetails";
+import Wishlist from "./pages/WishList";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/search" element={<SearchResults />} />
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route path="/cart" element={<CartDetails />} />
+          <Route path="/wishlist" element={<Wishlist />} />
         </Routes>
       </div>
     </Router>
