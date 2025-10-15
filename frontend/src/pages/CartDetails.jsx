@@ -4,11 +4,14 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import CartItem from "../components/CartItem";
 import ShoppingLoader from "@/components/ShoppingLoader";
+import { useNavigate } from "react-router";
+import { ShoppingCart } from "lucide-react";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -69,9 +72,30 @@ const Cart = () => {
       </h1>
 
       {cartItems.length === 0 ? (
-        <p className="text-gray-400 text-xl text-center mt-20">
-          🛒 Your cart is empty.
-        </p>
+        <div className="flex flex-col items-center justify-center mt-20 space-y-8 animate-fade-in">
+          {/* Animated Shopping Cart Icon */}
+          <div className="bg-gray-800/60 p-10 rounded-full shadow-2xl backdrop-blur-md border border-purple-600/40">
+            <ShoppingCart className="w-20 h-20 text-purple-400 animate-bounce-slow" />
+          </div>
+
+          {/* Gradient Text */}
+          <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">
+            Your cart is empty!
+          </h2>
+
+          <p className="text-gray-400 text-center max-w-md leading-relaxed">
+            Looks like you haven’t added anything yet. Start exploring and fill
+            your cart with amazing products ✨
+          </p>
+
+          {/* Call-to-action Button */}
+          <button
+            onClick={() => navigate("/products")}
+            className="mt-4 px-8 py-3 bg-purple-600 hover:bg-purple-500 rounded-full font-semibold text-lg transition-all shadow-lg hover:scale-105"
+          >
+            🛍️ Browse Products
+          </button>
+        </div>
       ) : (
         <div className="max-w-6xl mx-auto">
           {/* Cart Items List */}

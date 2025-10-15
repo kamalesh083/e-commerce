@@ -9,6 +9,7 @@ import ProductDetails from "./pages/ProductDetails";
 import SearchResults from "./pages/SearchResults";
 import CartDetails from "./pages/CartDetails";
 import Wishlist from "./pages/WishList";
+import Profile from "./pages/Profile";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route path="/cart" element={<CartDetails />} />
           <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </Router>

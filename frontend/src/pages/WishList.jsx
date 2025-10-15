@@ -47,7 +47,7 @@ const Wishlist = () => {
 
       {wishlist.length === 0 ? (
         <div className="flex flex-col items-center justify-center mt-20 space-y-6">
-          <Heart className="w-20 h-20 text-red-500 animate-bounce" />
+          <Heart className="w-20 h-20 text-red-500 fill-red-500 animate-bounce" />
           <p className="text-2xl md:text-3xl text-gray-300 text-center font-semibold">
             Oops! Your wishlist is empty 😢
           </p>
@@ -67,6 +67,7 @@ const Wishlist = () => {
           {wishlist.map((product) => (
             <div
               key={product._id}
+              onClick={() => navigate(`/products/${product._id}`)}
               className="relative bg-gray-800/70 p-4 rounded-3xl shadow-lg flex flex-col items-center hover:scale-105 transition-transform"
             >
               <img
