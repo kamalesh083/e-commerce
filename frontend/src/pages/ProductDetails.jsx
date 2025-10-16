@@ -31,7 +31,7 @@ const ProductDetails = () => {
         const found = res.data.wishlist.some((p) => p._id === id);
         setIsWishlisted(found);
       } catch (err) {
-        console.log("⚠️ Could not check wishlist (user not logged in)");
+        console.log("⚠️ Could not check wishlist (user not logged in)", err);
       }
     };
     fetchProduct();

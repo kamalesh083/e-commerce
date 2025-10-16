@@ -17,10 +17,10 @@ const Navbar = () => {
   };
 
   return (
-    <div className="relative flex items-center px-6 py-3 bg-gray-900/80 backdrop-blur-md border-b border-purple-500/20 shadow-md w-full">
+    <div className="relative z-50 flex items-center px-6 py-3 bg-gray-900/80 backdrop-blur-md border-b border-purple-500/20 shadow-md w-full">
       {/* Left: Logo */}
       <div
-        className="flex items-center gap-2 cursor-pointer z-10"
+        className="flex items-center gap-2 cursor-pointer z-50"
         onClick={() => navigate("/")}
       >
         <img src={logo} alt="logo" className="w-12 h-auto" />
@@ -28,24 +28,23 @@ const Navbar = () => {
       </div>
 
       {/* Center: Navbar2 (desktop only) */}
-      <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0">
+      <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-40">
         <Navbar2 />
       </div>
 
       {/* Right: Cart + Search + User Menu */}
-      <div className="flex items-center gap-5 z-10 ml-auto">
+      <div className="flex items-center gap-5 ml-auto z-50">
         <button
           onClick={() => navigate("/cart")}
           className="relative p-2 text-purple-400 hover:text-purple-300 transition-colors"
         >
           <ShoppingCart size={26} />
         </button>
-
         <div className="max-w-[300px]">
           <SearchBar onSearch={handleSearch} />
         </div>
-
-        <UserMenu />
+        <UserMenu />{" "}
+        {/* Make sure dropdown inside UserMenu uses absolute z-50 */}
       </div>
     </div>
   );

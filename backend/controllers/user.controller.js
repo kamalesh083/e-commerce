@@ -131,5 +131,70 @@ const checkAuth = async (req, res) => {
       .json({ message: "Internal Server Error", error: error.message });
   }
 };
+// Get user shipping details
+// Fetch user details (personal + shipping)
+const getUserDetails = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select(
+      "firstName lastName email phone shippingDetails"
+    );
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-export { signup, login, logout, resetPassword, checkAuth };
+    res.status(200).json({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
+      shipping: user.shippingDetails || {},
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Update user details (personal + shipping)
+const updateUserDetails = async (req, res) => {
+  try {
+    const { firstName, lastName, email, phone, shipping } = req.body;
+
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    user.firstName = firstName || user.firstName;
+    user.lastName = lastName || user.lastName;
+    user.email = email || user.email;
+    user.phone = phone || user.phone;
+
+    user.shippingDetails = {
+      address: shipping.address || user.shippingDetails?.address || "",
+      city: shipping.city || user.shippingDetails?.city || "",
+      postalCode: shipping.postalCode || user.shippingDetails?.postalCode || "",
+      country: shipping.country || user.shippingDetails?.country || "",
+      phone: shipping.phone || user.shippingDetails?.phone || "",
+    };
+
+    await user.save();
+
+    res.status(200).json({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
+      shipping: user.shippingDetails,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export {
+  signup,
+  login,
+  logout,
+  resetPassword,
+  checkAuth,
+  getUserDetails,
+  updateUserDetails,
+};

@@ -1,5 +1,13 @@
 import mongoose from "mongoose";
 
+const shippingSchema = new mongoose.Schema({
+  address: String,
+  city: String,
+  state: String,
+  postalCode: String,
+  country: String,
+});
+
 const userSchema = new mongoose.Schema(
   {
     firstName: {
@@ -25,6 +33,7 @@ const userSchema = new mongoose.Schema(
         ref: "Product",
       },
     ],
+    shippingDetails: shippingSchema,
   },
   { timestamps: true }
 );

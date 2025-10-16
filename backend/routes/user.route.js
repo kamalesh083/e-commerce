@@ -5,6 +5,8 @@ import {
   logout,
   resetPassword,
   checkAuth,
+  getUserDetails,
+  updateUserDetails,
 } from "../controllers/user.controller.js";
 import verifyToken from "../middleware/verifyToken.js";
 
@@ -19,5 +21,8 @@ router.post("/login", login);
 router.post("/logout", logout);
 
 router.post("/resetPassword", resetPassword);
+
+router.get("/details", verifyToken, getUserDetails);
+router.post("/details", verifyToken, updateUserDetails);
 
 export default router;
