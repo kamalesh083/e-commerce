@@ -1,16 +1,19 @@
 // ProductDetails.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { ArrowLeft } from "lucide-react";
-import { Heart, HeartOff } from "lucide-react";
+import { ArrowLeft, Heart, HeartOff } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ShoppingLoader from "@/components/ShoppingLoader";
+import ConfirmOrderModal from "../components/ConfirmPopUp";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [orderQuantity, setOrderQuantity] = useState(1);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +26,7 @@ const ProductDetails = () => {
         console.log(err);
       }
     };
+
     const checkWishlistStatus = async () => {
       try {
         const res = await axios.get("http://localhost:5000/api/wishlist", {
@@ -34,6 +38,7 @@ const ProductDetails = () => {
         console.log("⚠️ Could not check wishlist (user not logged in)", err);
       }
     };
+
     fetchProduct();
     checkWishlistStatus();
   }, [id]);
@@ -53,12 +58,12 @@ const ProductDetails = () => {
           productId: product._id,
           quantity: 1,
         },
-        { withCredentials: true } // ensures JWT cookie is sent
+        { withCredentials: true }
       );
       toast.success("Added to cart!");
       console.log(res.data);
     } catch (err) {
-      if (err?.response?.data?.message == "Unauthorized - No token") {
+      if (err?.response?.data?.message === "Unauthorized - No token") {
         toast.error("Please login to add items to cart.");
       } else {
         toast.error(err?.response?.data?.message || "Failed to add to cart.");
@@ -75,12 +80,11 @@ const ProductDetails = () => {
         { withCredentials: true }
       );
       toast.success(res.data.message);
-      // Optionally, update local state or refetch wishlist status
       setIsWishlisted((prev) => !prev);
       console.log(res.data);
     } catch (error) {
       console.log(error);
-      if (error?.response?.data?.message == "Unauthorized - No token") {
+      if (error?.response?.data?.message === "Unauthorized - No token") {
         toast.error("Please login to manage your wishlist.");
       } else {
         toast.error("Failed to update wishlist.");
@@ -90,7 +94,7 @@ const ProductDetails = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white p-16 relative">
-      {/* Back Button: floating at top-left */}
+      {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
         className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-800/70 hover:bg-gray-700/80 text-purple-400 font-medium backdrop-blur-md shadow-lg absolute top-8 left-8 transition-all"
@@ -103,17 +107,15 @@ const ProductDetails = () => {
       <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row gap-16 pt-12">
         {/* Left: Image */}
         <div className="relative flex-1 flex justify-center items-start">
-          {" "}
-          {/* <--- 1. ADD 'relative' HERE */}
           <img
             src={product.imageUrl}
             alt={product.name}
             className="w-full max-w-2xl h-auto object-contain rounded-3xl border border-purple-500/40 shadow-2xl"
           />
-          {/* ❤️ Heart Icon */}
+          {/* Wishlist Heart */}
           <button
             onClick={handleToggleWishlist}
-            className="absolute top-4 right-4 p-3 bg-gray-800/70 hover:bg-gray-700 rounded-full shadow-lg transition-all" /* <--- 2. CHANGE 'bottom-4' to 'top-4' */
+            className="absolute top-4 right-4 p-3 bg-gray-800/70 hover:bg-gray-700 rounded-full shadow-lg transition-all"
           >
             {isWishlisted ? (
               <Heart className="w-6 h-6 text-red-500 fill-current" />
@@ -155,7 +157,10 @@ const ProductDetails = () => {
             >
               Add to Cart
             </button>
-            <button className="flex-1 bg-green-600 hover:bg-green-500 py-4 rounded-3xl font-semibold text-lg transition-all">
+            <button
+              className="flex-1 bg-green-600 hover:bg-green-500 py-4 rounded-3xl font-semibold text-lg transition-all"
+              onClick={() => setIsModalOpen(true)}
+            >
               Order Now
             </button>
           </div>
@@ -197,6 +202,33 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
+
+      {/* Confirm Order Modal */}
+      {isModalOpen && (
+        <ConfirmOrderModal
+          product={product}
+          quantity={orderQuantity}
+          onClose={() => setIsModalOpen(false)}
+          onConfirm={async () => {
+            try {
+              await axios.post(
+                "http://localhost:5000/api/orders",
+                {
+                  productId: product._id,
+                  quantity: orderQuantity,
+                },
+                { withCredentials: true }
+              );
+              toast.success("Order confirmed!");
+              setIsModalOpen(false);
+              navigate("/my-orders");
+            } catch (err) {
+              console.log(err);
+              toast.error("Failed to confirm order.");
+            }
+          }}
+        />
+      )}
     </div>
   );
 };

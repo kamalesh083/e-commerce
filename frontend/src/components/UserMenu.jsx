@@ -114,7 +114,7 @@ const UserMenu = () => {
                   <User size={18} /> Profile
                 </Link>
                 <Link
-                  to="/orders"
+                  to="/my-orders"
                   className="flex items-center gap-2 px-4 py-2 hover:bg-purple-700/40 transition-all"
                   onClick={() => setShowDropdown(false)}
                 >

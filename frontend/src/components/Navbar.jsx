@@ -24,7 +24,7 @@ const Navbar = () => {
         onClick={() => navigate("/")}
       >
         <img src={logo} alt="logo" className="w-12 h-auto" />
-        <img src={logoName} alt="logoName" className="h-10" />
+        <img src={logoName} alt="logoName" className="h-10 block sm:hidden" />
       </div>
 
       {/* Center: Navbar2 (desktop only) */}

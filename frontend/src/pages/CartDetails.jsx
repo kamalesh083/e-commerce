@@ -63,6 +63,11 @@ const Cart = () => {
     }
   };
 
+  const handleCheckout = () => {
+    navigate("/checkout");
+    toast.success("Proceeding to checkout...");
+  };
+
   if (loading) return <ShoppingLoader />;
 
   return (
@@ -128,7 +133,7 @@ const Cart = () => {
                 Clear Cart
               </button>
               <button
-                onClick={() => toast.success("Proceeding to checkout...")}
+                onClick={handleCheckout}
                 className="bg-purple-600 hover:bg-purple-500 px-6 py-3 rounded-3xl font-semibold transition-all shadow-md"
               >
                 Checkout

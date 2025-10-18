@@ -10,6 +10,8 @@ import SearchResults from "./pages/SearchResults";
 import CartDetails from "./pages/CartDetails";
 import Wishlist from "./pages/WishList";
 import Profile from "./pages/Profile";
+import MyOrders from "./pages/MyOrders";
+import CheckoutPage from "./pages/Checkout";
 
 const App = () => {
   return (
@@ -27,6 +29,8 @@ const App = () => {
           <Route path="/cart" element={<CartDetails />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/my-orders" element={<MyOrders />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
         </Routes>
       </div>
     </Router>
